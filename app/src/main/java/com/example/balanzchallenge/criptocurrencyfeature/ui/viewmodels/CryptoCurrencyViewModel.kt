@@ -13,6 +13,9 @@ import com.example.balanzchallenge.criptocurrencyfeature.framework.models.binanc
 import com.example.balanzchallenge.criptocurrencyfeature.ui.models.CryptoUI
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.awaitResponse
@@ -30,6 +33,7 @@ class CryptoCurrencyViewModel : ViewModel() {
 
     private var cryptoListUi:MutableList<CryptoUI> = mutableListOf()
 
+    /*
     fun getData(){
         viewModelScope.launch{
             _viewStateLD.value = BaseViewState.Loading
@@ -38,6 +42,18 @@ class CryptoCurrencyViewModel : ViewModel() {
             fillCriptoUI(price, statistic)
             _viewStateLD.value = BaseViewState.Ready
         }
+    }
+     */
+
+    val getDataFlow = flow {
+        while (true){
+            delay(1500L)
+            val price = getPrice()
+            val statistic = getStatistic()
+            emit(fillCriptoUIFlow(price,statistic))
+            Log.d("FLOW:", "EXECUTED")
+        }
+
     }
 
     private suspend fun getPrice(): List<PriceTicker>?{
@@ -67,6 +83,22 @@ class CryptoCurrencyViewModel : ViewModel() {
             cryptoListUi.add(cryptoUiAux)
         }
         _cryptoListLD.value = cryptoListUi
+    }
+
+    fun fillCriptoUIFlow(price: List<PriceTicker>?, statistic: List<PriceDayStatistic>?): List<CryptoUI>{
+        cryptoListUi = mutableListOf()
+        var zipList = price!!.zip(statistic!!)
+        zipList.forEach {
+            var cryptoUiAux = CryptoUI()
+            cryptoUiAux.imgUrl = "https://i0.wp.com/criptotendencia.com/wp-content/uploads/2022/02/Resumen-de-lo-mas-destacado-en-la-crypto-semana.jpg?fit=1200%2C675&ssl=1"
+            cryptoUiAux.Symbol = it.first.symbol
+            cryptoUiAux.Name = getName(it.first.symbol)
+            cryptoUiAux.Price = it.first.price
+            cryptoUiAux.PriceVariation = it.second.priceChangePercent
+
+            cryptoListUi.add(cryptoUiAux)
+        }
+        return cryptoListUi
     }
 
     fun getName(symbol: String): String{

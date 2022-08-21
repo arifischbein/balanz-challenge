@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.balanzchallenge.core.ui.BaseViewState
 import com.example.balanzchallenge.core.utils.exhaustive
@@ -15,6 +16,7 @@ import com.example.balanzchallenge.criptocurrencyfeature.ui.adapters.CryptoListA
 import com.example.balanzchallenge.criptocurrencyfeature.ui.viewmodels.CryptoCurrencyViewModel
 import com.example.balanzchallenge.databinding.FragmentCryptoCurrencyBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class CryptoCurrency : Fragment() {
@@ -43,10 +45,9 @@ class CryptoCurrency : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        viewModel.getData()
-
+        //viewModel.getData()
         binding.swipeRefresh.setOnRefreshListener {
-            viewModel.getData()
+            //viewModel.getData()
         }
     }
 
@@ -59,6 +60,11 @@ class CryptoCurrency : Fragment() {
     fun setupObserver(){
         viewModel.viewStateLD.observe(viewLifecycleOwner){ handleViewState(it) }
         viewModel.cryptoListLD.observe(viewLifecycleOwner){ cryptoAdapter.setData(it) }
+        lifecycleScope.launchWhenStarted {
+            viewModel.getDataFlow.collect{
+                cryptoAdapter.setData(it)
+            }
+        }
     }
 
     fun handleViewState(viewState: BaseViewState){
