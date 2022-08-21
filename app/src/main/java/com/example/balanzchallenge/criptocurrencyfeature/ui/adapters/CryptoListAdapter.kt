@@ -29,7 +29,7 @@ class CryptoListAdapter(): RecyclerView.Adapter<CryptoListAdapter.ViewHolder>() 
     }
 
     override fun getItemCount(): Int {
-        TODO("Not yet implemented")
+        return cryptoList.size
     }
 
     fun setData(cryptos: List<CryptoUI>){
@@ -49,10 +49,10 @@ class CryptoListAdapter(): RecyclerView.Adapter<CryptoListAdapter.ViewHolder>() 
         fun setName(name: String){
             binding.txtCryptoName.text = name
         }
-        fun setPrice(price: Double){
+        fun setPrice(price: String){
             binding.txtCryptoPrice.text = price.toString()
         }
-        fun setPriceVariation(priceVariation: Double){
+        fun setPriceVariation(priceVariation: String){
             binding.txtCryptoPriceChange.text = priceVariation.toString()
         }
     }

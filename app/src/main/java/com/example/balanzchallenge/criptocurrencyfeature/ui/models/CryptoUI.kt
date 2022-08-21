@@ -4,8 +4,8 @@ class CryptoUI(
     var imgUrl: String,
     var Symbol: String,
     var Name: String,
-    var Price: Double,
-    var PriceVariation: Double
+    var Price: String,
+    var PriceVariation: String
 ) {
-    constructor(): this("","","",0.0,0.0)
+    constructor(): this("","","","","")
 }
