@@ -76,9 +76,9 @@ class CryptoCurrencyViewModel : ViewModel() {
             var cryptoUiAux = CryptoUI()
             cryptoUiAux.imgUrl = "https://i0.wp.com/criptotendencia.com/wp-content/uploads/2022/02/Resumen-de-lo-mas-destacado-en-la-crypto-semana.jpg?fit=1200%2C675&ssl=1"
             cryptoUiAux.Symbol = it.first.symbol
-            cryptoUiAux.Name = getName(it.first.symbol)
-            cryptoUiAux.Price = it.first.price
-            cryptoUiAux.PriceVariation = it.second.priceChangePercent
+            //cryptoUiAux.name = getName(it.first.symbol)
+            cryptoUiAux.price = it.first.price
+            cryptoUiAux.priceVariation = it.second.priceChangePercent
 
             cryptoListUi.add(cryptoUiAux)
         }
@@ -92,30 +92,14 @@ class CryptoCurrencyViewModel : ViewModel() {
             var cryptoUiAux = CryptoUI()
             cryptoUiAux.imgUrl = "https://i0.wp.com/criptotendencia.com/wp-content/uploads/2022/02/Resumen-de-lo-mas-destacado-en-la-crypto-semana.jpg?fit=1200%2C675&ssl=1"
             cryptoUiAux.Symbol = it.first.symbol
-            cryptoUiAux.Name = getName(it.first.symbol)
-            cryptoUiAux.Price = it.first.price
-            cryptoUiAux.PriceVariation = it.second.priceChangePercent
+            //cryptoUiAux.Name = getName(it.first.symbol)
+            cryptoUiAux.name = CryptoUI.Names.fromSymbol(it.first.symbol)
+            cryptoUiAux.price = it.first.price
+            cryptoUiAux.priceVariation = it.second.priceChangePercent
 
             cryptoListUi.add(cryptoUiAux)
         }
         return cryptoListUi
-    }
-
-    fun getName(symbol: String): String{
-        return when(symbol){
-            "BTCBUSD" -> {"Bitcoin"}
-            "ETHBUSD" -> {"Etherium"}
-            "BNBBUSD" -> {"Binance Coin"}
-            "LUNABUSD" -> {"Luna"}
-            "SOLBUSD" -> {"Solana"}
-            "LTCBUSD" -> {"Leitecoin"}
-            "MATICBUSD" -> {"Matin Network"}
-            "AVAXBUSD" -> {"Avax"}
-            "XRPBUSD" -> {"Xrp"}
-            "BUSDUSDT" -> {"Binance USD"}
-
-            else -> {""}
-        }
     }
 
 }

@@ -22,9 +22,9 @@ class CryptoListAdapter(): RecyclerView.Adapter<CryptoListAdapter.ViewHolder>() 
         with(holder){
             setImg(cryptoList[position].imgUrl)
             setSymbol(cryptoList[position].Symbol)
-            setName(cryptoList[position].Name)
-            setPrice(cryptoList[position].Price)
-            setPriceVariation(cryptoList[position].PriceVariation)
+            setName(cryptoList[position].name)
+            setPrice(cryptoList[position].price)
+            setPriceVariation(cryptoList[position].priceVariation)
         }
     }
 
