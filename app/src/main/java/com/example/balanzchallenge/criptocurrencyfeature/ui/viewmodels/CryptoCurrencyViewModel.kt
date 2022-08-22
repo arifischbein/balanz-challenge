@@ -32,8 +32,7 @@ class CryptoCurrencyViewModel : ViewModel() {
     val cryptoListLD: LiveData<MutableList<CryptoUI>> get() = _cryptoListLD
 
     private var cryptoListUi:MutableList<CryptoUI> = mutableListOf()
-
-    /*
+/*
     fun getData(){
         viewModelScope.launch{
             _viewStateLD.value = BaseViewState.Loading
@@ -43,13 +42,16 @@ class CryptoCurrencyViewModel : ViewModel() {
             _viewStateLD.value = BaseViewState.Ready
         }
     }
-     */
+*/
 
     val getDataFlow = flow {
+        var price = getPrice()
+        var statistic = getStatistic()
+        emit(fillCriptoUIFlow(price,statistic))
         while (true){
             delay(1500L)
-            val price = getPrice()
-            val statistic = getStatistic()
+            price = getPrice()
+            statistic = getStatistic()
             emit(fillCriptoUIFlow(price,statistic))
             Log.d("FLOW:", "EXECUTED")
         }

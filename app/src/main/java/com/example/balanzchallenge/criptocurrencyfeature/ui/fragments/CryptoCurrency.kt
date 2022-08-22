@@ -48,9 +48,6 @@ class CryptoCurrency : Fragment() {
     override fun onStart() {
         super.onStart()
         //viewModel.getData()
-        binding.swipeRefresh.setOnRefreshListener {
-            //viewModel.getData()
-        }
     }
 
     fun setupRecycler(){
@@ -59,7 +56,7 @@ class CryptoCurrency : Fragment() {
         binding.recyclerCryptos.adapter = cryptoAdapter
         //clicklister
     }
-    fun setupObserver(){
+    private fun setupObserver(){
         viewModel.viewStateLD.observe(viewLifecycleOwner){ handleViewState(it) }
         viewModel.cryptoListLD.observe(viewLifecycleOwner){ cryptoAdapter.setData(it) }
         lifecycleScope.launchWhenStarted {
@@ -69,11 +66,9 @@ class CryptoCurrency : Fragment() {
         }
     }
 
-    fun handleViewState(viewState: BaseViewState){
+    private fun handleViewState(viewState: BaseViewState){
         when(viewState){
-            is BaseViewState.Ready -> {
-                binding.swipeRefresh.isRefreshing = false
-            }
+            is BaseViewState.Ready -> { }
             is BaseViewState.Loading -> { }
             is BaseViewState.Refreshing -> { }
             is BaseViewState.Failure -> { }
