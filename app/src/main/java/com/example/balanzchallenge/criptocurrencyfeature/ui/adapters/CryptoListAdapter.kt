@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.balanzchallenge.core.utils.unaccent
 import com.example.balanzchallenge.criptocurrencyfeature.ui.models.CryptoUI
 import com.example.balanzchallenge.databinding.ItemRecyclerCryptocurrencyBinding
 import kotlin.properties.Delegates
@@ -11,6 +12,9 @@ import kotlin.properties.Delegates
 class CryptoListAdapter(): RecyclerView.Adapter<CryptoListAdapter.ViewHolder>() {
 
     var cryptoList: List<CryptoUI> by Delegates.observable(emptyList()){ _, _, _ -> notifyDataSetChanged()}
+    private var cryptoBackupList = mutableListOf<CryptoUI>()
+    var filteredList = mutableListOf<CryptoUI>()
+    private var filteredText = ""
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -33,8 +37,33 @@ class CryptoListAdapter(): RecyclerView.Adapter<CryptoListAdapter.ViewHolder>() 
     }
 
     fun setData(cryptos: List<CryptoUI>){
-        cryptoList = cryptos
+        if(filteredText.isBlank()){
+            cryptoList = cryptos
+        }else{
+            cryptoBackupList = cryptos.toMutableList()
+            filter(filteredText)
+        }
+
     }
+
+    fun filter(text: String) {
+        filteredList = mutableListOf()
+        filteredText = text
+
+        if (text.isEmpty()) {
+            filteredList = cryptoBackupList
+        } else {
+            cryptoBackupList.forEach {
+                if (it.Symbol.lowercase().unaccent().contains(text.lowercase()) ||
+                    it.name.lowercase().unaccent().contains(text.lowercase())
+                )
+                    filteredList.add(it)
+            }
+        }
+        cryptoList = filteredList
+
+    }
+
 
     class ViewHolder(val binding: ItemRecyclerCryptocurrencyBinding): RecyclerView.ViewHolder(binding.cardCryptoCurrencyItem){
         fun setImg(imgUrl: String){

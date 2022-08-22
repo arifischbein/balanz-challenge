@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -41,6 +42,7 @@ class CryptoCurrency : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupRecycler()
         setupObserver()
+        setupSearchView()
     }
 
     override fun onStart() {
@@ -77,5 +79,24 @@ class CryptoCurrency : Fragment() {
             is BaseViewState.Failure -> { }
             is BaseViewState.Alert -> { }
         }.exhaustive
+    }
+
+    private fun setupSearchView() {
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                binding.searchView.clearFocus()
+                searchQuery(query, true)
+                return false
+            }
+
+            override fun onQueryTextChange(query: String): Boolean {
+                searchQuery(query)
+                return false
+            }
+        })
+    }
+
+    private fun searchQuery(query: String, submit: Boolean = false) {
+        cryptoAdapter.filter(query)
     }
 }

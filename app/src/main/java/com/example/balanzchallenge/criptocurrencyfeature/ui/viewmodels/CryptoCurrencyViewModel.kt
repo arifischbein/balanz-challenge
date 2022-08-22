@@ -91,9 +91,9 @@ class CryptoCurrencyViewModel : ViewModel() {
         zipList.forEach {
             var cryptoUiAux = CryptoUI()
             cryptoUiAux.imgUrl = "https://i0.wp.com/criptotendencia.com/wp-content/uploads/2022/02/Resumen-de-lo-mas-destacado-en-la-crypto-semana.jpg?fit=1200%2C675&ssl=1"
-            cryptoUiAux.Symbol = it.first.symbol
+            cryptoUiAux.Symbol = CryptoUI.Names.baseAssetfromSymbol(it.first.symbol)
             //cryptoUiAux.Name = getName(it.first.symbol)
-            cryptoUiAux.name = CryptoUI.Names.fromSymbol(it.first.symbol)
+            cryptoUiAux.name = CryptoUI.Names.baseNamefromSymbol(it.first.symbol)
             cryptoUiAux.price = it.first.price
             cryptoUiAux.priceVariation = it.second.priceChangePercent
 

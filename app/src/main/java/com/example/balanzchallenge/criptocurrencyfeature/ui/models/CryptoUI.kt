@@ -9,24 +9,31 @@ class CryptoUI(
 ) {
     constructor(): this("","","","","")
 
-    enum class Names(val fullName: String){
-        BTCBUSD("Bitcoin"),
-        ETHBUSD("Etherium"),
-        BNBBUSD("Binance Coin"),
-        LUNABUSD("Luna"),
-        SOLBUSD("Solana"),
-        LTCBUSD("Leitecoin"),
-        MATICBUSD("Matin Network"),
-        AVAXBUSD("Avax"),
-        XRPBUSD("Xrp"),
-        BUSDUSDT("Binance USD"),
+    enum class Names(val fullName: String, val baseAsset: String){
+        BTCBUSD("Bitcoin", "BTC"),
+        ETHBUSD("Etherium", "ETH"),
+        BNBBUSD("Binance Coin", "BNB"),
+        LUNABUSD("Luna","LUNA"),
+        SOLBUSD("Solana", "SOL"),
+        LTCBUSD("Leitecoin", "LTC"),
+        MATICBUSD("Matin Network", "MATIC"),
+        AVAXBUSD("Avax", "AVAX"),
+        XRPBUSD("Xrp", "XRP"),
+        BUSDUSDT("Binance USD", "BUSD"),
 
-        MISSING("Sin informacion");
+        MISSING("Sin informacion", "");
 
         companion object{
-            fun fromSymbol(sym: String): String {
+            fun baseNamefromSymbol(sym: String): String {
                 return try {
-                    valueOf(sym).toString()
+                    valueOf(sym).fullName
+                } catch(e: IllegalArgumentException) {
+                    MISSING.toString()
+                }
+            }
+            fun baseAssetfromSymbol(sym: String): String {
+                return try {
+                    valueOf(sym).baseAsset
                 } catch(e: IllegalArgumentException) {
                     MISSING.toString()
                 }
