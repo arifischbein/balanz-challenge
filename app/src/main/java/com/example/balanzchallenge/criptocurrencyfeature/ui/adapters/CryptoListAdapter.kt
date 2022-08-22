@@ -7,9 +7,15 @@ import com.bumptech.glide.Glide
 import com.example.balanzchallenge.core.utils.unaccent
 import com.example.balanzchallenge.criptocurrencyfeature.ui.models.CryptoUI
 import com.example.balanzchallenge.databinding.ItemRecyclerCryptocurrencyBinding
+import kotlin.math.roundToInt
+import kotlin.math.roundToLong
 import kotlin.properties.Delegates
 
 class CryptoListAdapter(): RecyclerView.Adapter<CryptoListAdapter.ViewHolder>() {
+
+    companion object {
+        const val CCL = 200
+    }
 
     var cryptoList: List<CryptoUI> by Delegates.observable(emptyList()){ _, _, _ -> notifyDataSetChanged()}
     private var cryptoBackupList = mutableListOf<CryptoUI>()
@@ -27,7 +33,11 @@ class CryptoListAdapter(): RecyclerView.Adapter<CryptoListAdapter.ViewHolder>() 
             setImg(cryptoList[position].imgUrl)
             setSymbol(cryptoList[position].Symbol)
             setName(cryptoList[position].name)
-            setPrice(cryptoList[position].price)
+            if(cryptoList[position].name == "BUSDUSDT"){
+                setUsdPrice(cryptoList[position].price)
+            }else{
+                setPrice(cryptoList[position].price)
+            }
             setPriceVariation(cryptoList[position].priceVariation)
         }
     }
@@ -79,10 +89,15 @@ class CryptoListAdapter(): RecyclerView.Adapter<CryptoListAdapter.ViewHolder>() 
             binding.txtCryptoName.text = name
         }
         fun setPrice(price: String){
-            binding.txtCryptoPrice.text = price.toString()
+            val decimalPrice = price.toDouble()* CCL
+            binding.txtCryptoPrice.text = String.format("%.4f",decimalPrice)
+        }
+        fun setUsdPrice(price: String){
+            val decimalPrice = (1/price.toDouble()) * CCL
+            binding.txtCryptoPrice.text = String.format("%.4f",decimalPrice)
         }
         fun setPriceVariation(priceVariation: String){
-            binding.txtCryptoPriceChange.text = priceVariation.toString()
+            binding.txtCryptoPriceChange.text = priceVariation
         }
     }
 }
